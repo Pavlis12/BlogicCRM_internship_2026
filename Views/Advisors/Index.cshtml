@@ -1,0 +1,37 @@
+﻿@model IEnumerable<BlogicCRM.Models.Advisor>
+@{
+    ViewData["Title"] = "Seznam poradců";
+}
+
+<h1>Seznam poradců</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Přidat nového poradce</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>E-mail</th>
+            <th>Telefon</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var poradce in Model)
+        {
+            <tr>
+                <td>@poradce.Jmeno</td>
+                <td>@poradce.Prijmeni</td>
+                <td>@poradce.Email</td>
+                <td>@poradce.Telefon</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@poradce.Id" class="btn btn-sm btn-warning">Upravit</a>
+                    <a asp-action="Details" asp-route-id="@poradce.Id" class="btn btn-sm btn-info">Detail</a>
+                    <a asp-action="Delete" asp-route-id="@poradce.Id" class="btn btn-sm btn-danger">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
