@@ -1,0 +1,35 @@
+name: .NET Tests Pipeline
+
+# Spustí se při každém pushi do hlavní větve
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Stáhne tvůj kód z GitHubu
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Připraví .NET prostředí (verzi si případně uprav podle svého projektu)
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x' 
+
+    # 3. Stáhne všechny potřebné NuGet balíčky (včetně EntityFramework.InMemory)
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # 4. Zkompiluje kód
+    - name: Build
+      run: dotnet build --no-restore
+
+    # 5. Spustí tvé testy a vypíše výsledky
+    - name: Run Tests
+      run: dotnet test --no-build --verbosity normal

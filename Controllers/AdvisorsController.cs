@@ -1,13 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogicCRM.Helpers;
 using BlogicCRM.Models;
 using BlogicCRM.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using BlogicCRM.Helpers;
 
 namespace BlogicCRM.Controllers
 {
     public class AdvisorsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
+        public IActionResult ExportToCsv()
+        {
+            var advisors = _context.Advisors.ToList();
+            var csvBytes = CsvExportHelper.GenerateCsv(advisors);
+            return File(csvBytes, "text/csv", "advisors_export.csv");
+        }
         public AdvisorsController(ApplicationDbContext context)
         {
             _context = context;

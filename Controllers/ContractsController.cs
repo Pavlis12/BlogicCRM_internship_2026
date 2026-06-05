@@ -3,13 +3,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BlogicCRM.Models;
 using BlogicCRM.ViewModels;
+using BlogicCRM.Helpers;
 
 namespace BlogicCRM.Controllers
 {
     public class ContractsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public IActionResult ExportToCsv()
+        {
+            var contracts = _context.Contracts
+                .Select(c => new { c.Id, c.EvidencniCislo, c.Instituce, c.ClientId, c.ManagerId })
+                .ToList();
 
+            var csvBytes = CsvExportHelper.GenerateCsv(contracts);
+            return File(csvBytes, "text/csv", "contracts_export.csv");
+        }
         public ContractsController(ApplicationDbContext context)
         {
             _context = context;
