@@ -12,15 +12,18 @@ namespace BlogicCRM.Models
         public DbSet<Client> Clients { get; set; }
         public DbSet<Advisor> Advisors { get; set; }
         public DbSet<Contract> Contracts { get; set; }
+        public DbSet<ContractAdvisor> ContractAdvisors { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-          
+            modelBuilder.Entity<ContractAdvisor>().ToTable("ContractAdvisor");
+
             modelBuilder.Entity<Contract>()
                 .HasOne(c => c.Manager)
                 .WithMany()
                 .HasForeignKey(c => c.ManagerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<ContractAdvisor>()
                 .HasOne(ca => ca.Advisor)
                 .WithMany(a => a.ContractAdvisors)

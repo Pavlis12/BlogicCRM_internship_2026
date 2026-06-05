@@ -1,0 +1,58 @@
+﻿@model BlogicCRM.ViewModels.ContractEditViewModel
+@{
+    ViewData["Title"] = "Upravit smlouvu";
+}
+
+<h1>Upravit smlouvu</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="form-group mb-3">
+                <label asp-for="EvidencniCislo" class="control-label"></label>
+                <input asp-for="EvidencniCislo" class="form-control" />
+                <span asp-validation-for="EvidencniCislo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Instituce" class="control-label"></label>
+                <input asp-for="Instituce" class="form-control" />
+                <span asp-validation-for="Instituce" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ClientId" class="control-label"></label>
+                <select asp-for="ClientId" asp-items="Model.DostupniKlienti" class="form-control"></select>
+                <span asp-validation-for="ClientId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ManagerId" class="control-label"></label>
+                <select asp-for="ManagerId" asp-items="Model.DostupniManageri" class="form-control"></select>
+                <span asp-validation-for="ManagerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="control-label d-block fw-bold mb-2">Další účastníci (poradci):</label>
+                <div class="p-3 border rounded bg-light" style="max-height: 200px; overflow-y: auto;">
+                    @for (int i = 0; i < Model.DostupniUcastnici.Count; i++)
+                    {
+                        <div class="form-check mb-2">
+                            <input type="hidden" asp-for="@Model.DostupniUcastnici[i].AdvisorId" />
+                            <input type="hidden" asp-for="@Model.DostupniUcastnici[i].JmenoPrijmeni" />
+                            <input asp-for="@Model.DostupniUcastnici[i].IsSelected" class="form-check-input" type="checkbox" id="check_@i" />
+                            <label class="form-check-label" for="check_@i">@Model.DostupniUcastnici[i].JmenoPrijmeni</label>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Uložit změny" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary ms-2">Zpět</a>
+            </div>
+        </form>
+    </div>
+</div>

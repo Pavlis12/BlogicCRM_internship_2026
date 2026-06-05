@@ -1,0 +1,42 @@
+﻿@model BlogicCRM.Models.Contract
+@{
+    ViewData["Title"] = "Detail smlouvy";
+}
+
+<h1>Detail smlouvy</h1>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-3">Evidenční číslo</dt>
+        <dd class="col-sm-9">@Model.EvidencniCislo</dd>
+        
+        <dt class="col-sm-3">Instituce</dt>
+        <dd class="col-sm-9">@Model.Instituce</dd>
+        
+        <dt class="col-sm-3">Klient</dt>
+        <dd class="col-sm-9">@Model.Client?.Jmeno @Model.Client?.Prijmeni</dd>
+        
+        <dt class="col-sm-3">Správce (hlavní poradce)</dt>
+        <dd class="col-sm-9">@Model.Manager?.Jmeno @Model.Manager?.Prijmeni</dd>
+
+        <dt class="col-sm-3">Všichni účastníci (poradci)</dt>
+        <dd class="col-sm-9">
+            <ul class="list-group col-md-6">
+                @foreach (var relation in Model.ContractAdvisors)
+                {
+                    <li class="list-group-item">
+                        @relation.Advisor?.Jmeno @relation.Advisor?.Prijmeni
+                        @if (relation.AdvisorId == Model.ManagerId)
+                        {
+                            <span class="badge bg-success float-end">Správce</span>
+                        }
+                    </li>
+                }
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
+    <a asp-action="Index" class="btn btn-secondary">Zpět na seznam</a>
+</div>

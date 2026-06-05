@@ -1,9 +1,12 @@
 <Solution>
   <Folder Name="/ViewModels/">
+    <File Path="AdvisorCheckboxViewModel.cs" />
     <File Path="AdvisorEditViewModel.cs" />
     <File Path="AdvisorFormViewModel.cs" />
     <File Path="ClientEditViewModel.cs" />
     <File Path="ClientFormViewModel.cs" />
+    <File Path="ContractEditViewModel.cs" />
+    <File Path="ContractFormViewModel.cs" />
   </Folder>
   <Project Path="BlogicCRM.csproj" />
 </Solution>

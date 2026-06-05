@@ -1,0 +1,36 @@
+﻿@model IEnumerable<BlogicCRM.Models.Contract>
+@{
+    ViewData["Title"] = "Seznam smluv";
+}
+
+<h1>Seznam smluv</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Evidovat novou smlouvu</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Evidenční číslo</th>
+            <th>Instituce</th>
+            <th>Klient</th>
+            <th>Správce smlouvy</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contract in Model)
+        {
+            <tr>
+                <td>@contract.EvidencniCislo</td>
+                <td>@contract.Instituce</td>
+                <td>@contract.Client?.Jmeno @contract.Client?.Prijmeni</td>
+                <td>@contract.Manager?.Jmeno @contract.Manager?.Prijmeni</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@contract.Id" class="btn btn-sm btn-warning">Upravit</a>
+                    <a asp-action="Details" asp-route-id="@contract.Id" class="btn btn-sm btn-info">Detail</a>
+                    <a asp-action="Delete" asp-route-id="@contract.Id" class="btn btn-sm btn-danger">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
