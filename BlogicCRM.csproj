@@ -18,5 +18,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
+	<ItemGroup>
+		<Compile Remove="BlogicCRM.Tests\**" />
+		<Content Remove="BlogicCRM.Tests\**" />
+		<EmbeddedResource Remove="BlogicCRM.Tests\**" />
+		<None Remove="BlogicCRM.Tests\**" />
+	</ItemGroup>
 </Project>
