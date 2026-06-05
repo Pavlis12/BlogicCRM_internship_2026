@@ -8,6 +8,5 @@
     <File Path="ContractEditViewModel.cs" />
     <File Path="ContractFormViewModel.cs" />
   </Folder>
-  <Project Path="../BlogicCRM.Tests/BlogicCRM.Tests.csproj" />
   <Project Path="BlogicCRM.csproj" />
 </Solution>
