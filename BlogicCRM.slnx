@@ -1,3 +1,7 @@
 <Solution>
+  <Folder Name="/ViewModels/">
+    <File Path="ClientEditViewModel.cs" />
+    <File Path="ClientFormViewModel.cs" />
+  </Folder>
   <Project Path="BlogicCRM.csproj" />
 </Solution>

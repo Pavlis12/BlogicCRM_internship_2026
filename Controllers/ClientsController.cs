@@ -1,0 +1,115 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using BlogicCRM.Models;       
+using BlogicCRM.ViewModels; 
+
+namespace BlogicCRM.Controllers
+{
+    public class ClientsController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public ClientsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            var seznamKlientu = _context.Clients.ToList();
+            return View(seznamKlientu);
+        }
+
+        public IActionResult Create()
+        {
+            return View(new ClientFormViewModel());
+        }
+        public IActionResult Details(int id)
+        {
+            var klient = _context.Clients.Find(id); 
+            if (klient == null) return NotFound();
+            return View(klient); 
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var klient = _context.Clients.Find(id);
+            if (klient == null) return NotFound();
+
+            var model = new ClientEditViewModel
+            {
+                Id = klient.Id,
+                Jmeno = klient.Jmeno,
+                Prijmeni = klient.Prijmeni,
+                Email = klient.Email,
+                Telefon = klient.Telefon,
+                RodneCislo = klient.RodneCislo,
+                Vek = klient.Vek
+            };
+            return View(model);
+        }
+
+      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, ClientEditViewModel model)
+        {
+            if (id != model.Id) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                var klient = _context.Clients.Find(id);
+                if (klient == null) return NotFound();
+                klient.Jmeno = model.Jmeno;
+                klient.Prijmeni = model.Prijmeni;
+                klient.Email = model.Email;
+                klient.Telefon = model.Telefon;
+                klient.RodneCislo = model.RodneCislo;
+                klient.Vek = model.Vek;
+
+                _context.SaveChanges(); 
+                return RedirectToAction("Index"); 
+            }
+            return View(model);
+        }
+        public IActionResult Delete(int id)
+        {
+            var klient = _context.Clients.Find(id);
+            if (klient == null) return NotFound();
+            return View(klient);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var klient = _context.Clients.Find(id);
+            if (klient != null)
+            {
+                _context.Clients.Remove(klient); 
+                _context.SaveChanges();          
+            }
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken] 
+        public IActionResult Create(ClientFormViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var novyKlient = new Client
+                {
+                    Jmeno = model.Jmeno,
+                    Prijmeni = model.Prijmeni,
+                    Email = model.Email,
+                    Telefon = model.Telefon,
+                    RodneCislo = model.RodneCislo,
+                    Vek = model.Vek
+                };
+                _context.Clients.Add(novyKlient);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(model);
+        }
+    }
+}

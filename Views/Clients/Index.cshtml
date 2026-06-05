@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BlogicCRM.Models.Client>
+
+@{
+    ViewData["Title"] = "Seznam klientů";
+}
+
+<h1>Seznam klientů</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Přidat nového klienta</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Jméno</th>
+            <th>Příjmení</th>
+            <th>E-mail</th>
+            <th>Telefon</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var klient in Model)
+        {
+            <tr>
+                <td>@klient.Jmeno</td>
+                <td>@klient.Prijmeni</td>
+                <td>@klient.Email</td>
+                <td>@klient.Telefon</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@klient.Id" class="btn btn-sm btn-warning">Upravit</a>
+                    <a asp-action="Details" asp-route-id="@klient.Id" class="btn btn-sm btn-info">Detail</a>
+                    <a asp-action="Delete" asp-route-id="@klient.Id" class="btn btn-sm btn-danger">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
