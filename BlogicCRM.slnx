@@ -9,4 +9,5 @@
     <File Path="ContractFormViewModel.cs" />
   </Folder>
   <Project Path="BlogicCRM.csproj" />
+  <Project Path="BlogicCRM.Tests/BlogicCRM.Tests.csproj" />
 </Solution>
