@@ -2,22 +2,24 @@
 using BlogicCRM.Models;
 using BlogicCRM.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlogicCRM.Controllers
 {
     public class AdvisorsController : Controller
     {
         private readonly ApplicationDbContext _context;
+
+        public AdvisorsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult ExportToCsv()
         {
             var advisors = _context.Advisors.ToList();
             var csvBytes = CsvExportHelper.GenerateCsv(advisors);
             return File(csvBytes, "text/csv", "advisors_export.csv");
-        }
-        public AdvisorsController(ApplicationDbContext context)
-        {
-            _context = context;
         }
 
         public IActionResult Index()
@@ -33,11 +35,13 @@ namespace BlogicCRM.Controllers
             return View(poradce);
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View(new AdvisorFormViewModel());
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(AdvisorFormViewModel model)
@@ -61,6 +65,7 @@ namespace BlogicCRM.Controllers
             return View(model);
         }
 
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var poradce = _context.Advisors.Find(id);
@@ -78,7 +83,7 @@ namespace BlogicCRM.Controllers
             };
             return View(model);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, AdvisorEditViewModel model)
@@ -102,6 +107,8 @@ namespace BlogicCRM.Controllers
             }
             return View(model);
         }
+
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var poradce = _context.Advisors.Find(id);
@@ -109,6 +116,7 @@ namespace BlogicCRM.Controllers
             return View(poradce);
         }
 
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)

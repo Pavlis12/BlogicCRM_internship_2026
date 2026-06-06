@@ -12,6 +12,8 @@
         public Client Client { get; set; }
         public int ManagerId { get; set; }
         public Advisor Manager { get; set; }
+        public DateTime DatumZacatku { get; set; }
+        public DateTime? DatumKonce { get; set; }
         public ICollection<ContractAdvisor> ContractAdvisors { get; set; }
     }
 }

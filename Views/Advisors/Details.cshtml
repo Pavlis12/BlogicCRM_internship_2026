@@ -4,22 +4,31 @@
 }
 
 <h1>Detail poradce</h1>
+
 <div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">Jméno a Příjmení</dt>
         <dd class="col-sm-10">@Model.Jmeno @Model.Prijmeni</dd>
+        
         <dt class="col-sm-2">E-mail</dt>
         <dd class="col-sm-10">@Model.Email</dd>
+        
         <dt class="col-sm-2">Telefon</dt>
         <dd class="col-sm-10">@Model.Telefon</dd>
+        
         <dt class="col-sm-2">Rodné číslo</dt>
         <dd class="col-sm-10">@Model.RodneCislo</dd>
+        
         <dt class="col-sm-2">Věk</dt>
         <dd class="col-sm-10">@Model.Vek let</dd>
     </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Upravit</a>
+    }
     <a asp-action="Index" class="btn btn-secondary">Zpět na seznam</a>
 </div>

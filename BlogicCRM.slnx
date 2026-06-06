@@ -7,6 +7,7 @@
     <File Path="ClientFormViewModel.cs" />
     <File Path="ContractEditViewModel.cs" />
     <File Path="ContractFormViewModel.cs" />
+    <File Path="LoginViewModel.cs" />
   </Folder>
   <Project Path="../BlogicCRM.Tests/BlogicCRM.Tests.csproj" />
   <Project Path="BlogicCRM.csproj" />

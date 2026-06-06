@@ -7,7 +7,10 @@
 <h1>Seznam klientů</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Přidat nového klienta</a>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a asp-action="Create" class="btn btn-primary">Přidat nového klienta</a>
+    }
 
     <a asp-action="ExportToCsv" class="btn btn-outline-secondary ms-2">
         <i class="bi bi-file-earmark-spreadsheet"></i> Exportovat do CSV
@@ -21,6 +24,7 @@
             <th>Příjmení</th>
             <th>E-mail</th>
             <th>Telefon</th>
+            <th>Akce</th>
         </tr>
     </thead>
     <tbody>
@@ -32,9 +36,17 @@
                 <td>@klient.Email</td>
                 <td>@klient.Telefon</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@klient.Id" class="btn btn-sm btn-warning">Upravit</a>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-action="Edit" asp-route-id="@klient.Id" class="btn btn-sm btn-warning">Upravit</a>
+                    }
+
                     <a asp-action="Details" asp-route-id="@klient.Id" class="btn btn-sm btn-info">Detail</a>
-                    <a asp-action="Delete" asp-route-id="@klient.Id" class="btn btn-sm btn-danger">Smazat</a>
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a asp-action="Delete" asp-route-id="@klient.Id" class="btn btn-sm btn-danger">Smazat</a>
+                    }
                 </td>
             </tr>
         }

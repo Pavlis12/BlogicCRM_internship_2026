@@ -4,12 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using BlogicCRM.Models;
 using BlogicCRM.ViewModels;
 using BlogicCRM.Helpers;
-
+using Microsoft.AspNetCore.Authorization; 
 namespace BlogicCRM.Controllers
 {
     public class ContractsController : Controller
     {
         private readonly ApplicationDbContext _context;
+
+        public ContractsController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public IActionResult ExportToCsv()
         {
             var contracts = _context.Contracts
@@ -18,10 +24,6 @@ namespace BlogicCRM.Controllers
 
             var csvBytes = CsvExportHelper.GenerateCsv(contracts);
             return File(csvBytes, "text/csv", "contracts_export.csv");
-        }
-        public ContractsController(ApplicationDbContext context)
-        {
-            _context = context;
         }
 
         public IActionResult Index()
@@ -33,7 +35,19 @@ namespace BlogicCRM.Controllers
 
             return View(contracts);
         }
+        public IActionResult Details(int id)
+        {
+            var contract = _context.Contracts
+                .Include(c => c.Client)
+                .Include(c => c.Manager)
+                .Include(c => c.ContractAdvisors).ThenInclude(ca => ca.Advisor)
+                .FirstOrDefault(c => c.Id == id);
 
+            if (contract == null) return NotFound();
+
+            return View(contract);
+        }
+        [Authorize]
         public IActionResult Create()
         {
             var model = new ContractFormViewModel();
@@ -41,6 +55,7 @@ namespace BlogicCRM.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(ContractFormViewModel model)
@@ -86,21 +101,8 @@ namespace BlogicCRM.Controllers
             PopulateDropdownsAndCheckboxes(model);
             return View(model);
         }
-        // 4. DETAIL SMLOUVY
-        public IActionResult Details(int id)
-        {
-            var contract = _context.Contracts
-                .Include(c => c.Client)
-                .Include(c => c.Manager)
-                .Include(c => c.ContractAdvisors).ThenInclude(ca => ca.Advisor)
-                .FirstOrDefault(c => c.Id == id);
 
-            if (contract == null) return NotFound();
-
-            return View(contract);
-        }
-
-        // 5. ÚPRAVA SMLOUVY (Formulář - GET)
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var contract = _context.Contracts
@@ -129,8 +131,7 @@ namespace BlogicCRM.Controllers
 
             return View(model);
         }
-
-        // 6. ÚPRAVA SMLOUVY (Uložení - POST)
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, ContractEditViewModel model)
@@ -172,8 +173,7 @@ namespace BlogicCRM.Controllers
             PopulateDropdownsAndCheckboxes(model);
             return View(model);
         }
-
-        // 7. SMAZÁNÍ SMLOUVY (Dotaz - GET)
+        [Authorize]
         public IActionResult Delete(int id)
         {
             var contract = _context.Contracts
@@ -183,8 +183,7 @@ namespace BlogicCRM.Controllers
             if (contract == null) return NotFound();
             return View(contract);
         }
-
-      
+        [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
