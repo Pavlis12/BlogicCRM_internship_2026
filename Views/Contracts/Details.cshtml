@@ -13,6 +13,17 @@
         
         <dt class="col-sm-3">Instituce</dt>
         <dd class="col-sm-9">@Model.Instituce</dd>
+
+        <dt class="col-sm-3">Datum uzavření</dt>
+        <dd class="col-sm-9">@Model.DatumUzavreni.ToString("d. M. yyyy")</dd>
+        
+        <dt class="col-sm-3">Datum účinnosti</dt>
+        <dd class="col-sm-9">@Model.DatumPlatnosti.ToString("d. M. yyyy")</dd>
+        
+        <dt class="col-sm-3">Datum ukončení</dt>
+        <dd class="col-sm-9">
+            @(Model.DatumUkonceni == DateTime.MinValue || Model.DatumUkonceni == default ? "Smlouva je aktivní (Na dobu neurčitou)" : Model.DatumUkonceni.ToString("d. M. yyyy"))
+        </dd>
         
         <dt class="col-sm-3">Klient</dt>
         <dd class="col-sm-9">@Model.Client?.Jmeno @Model.Client?.Prijmeni</dd>

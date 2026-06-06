@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using BlogicCRM.Models;
 using BlogicCRM.ViewModels;
 using BlogicCRM.Helpers;
-using Microsoft.AspNetCore.Authorization; 
+using Microsoft.AspNetCore.Authorization;
+
 namespace BlogicCRM.Controllers
 {
     public class ContractsController : Controller
@@ -16,10 +17,20 @@ namespace BlogicCRM.Controllers
             _context = context;
         }
 
+        // VŠEM PŘÍSTUPNÉ: Spuštění exportu smluv do CSV (Včetně datumů)
         public IActionResult ExportToCsv()
         {
             var contracts = _context.Contracts
-                .Select(c => new { c.Id, c.EvidencniCislo, c.Instituce, c.ClientId, c.ManagerId })
+                .Select(c => new {
+                    c.Id,
+                    c.EvidencniCislo,
+                    c.Instituce,
+                    c.ClientId,
+                    c.ManagerId,
+                    c.DatumUzavreni,
+                    c.DatumPlatnosti,
+                    c.DatumUkonceni
+                })
                 .ToList();
 
             var csvBytes = CsvExportHelper.GenerateCsv(contracts);
@@ -47,6 +58,8 @@ namespace BlogicCRM.Controllers
 
             return View(contract);
         }
+
+       
         [Authorize]
         public IActionResult Create()
         {
@@ -55,6 +68,7 @@ namespace BlogicCRM.Controllers
             return View(model);
         }
 
+      
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -67,7 +81,10 @@ namespace BlogicCRM.Controllers
                     EvidencniCislo = model.EvidencniCislo,
                     Instituce = model.Instituce,
                     ClientId = model.ClientId,
-                    ManagerId = model.ManagerId
+                    ManagerId = model.ManagerId,
+                    DatumUzavreni = model.DatumUzavreni,
+                    DatumPlatnosti = model.DatumPlatnosti,
+                    DatumUkonceni = model.DatumUkonceni ?? DateTime.MinValue
                 };
 
                 _context.Contracts.Add(newContract);
@@ -117,7 +134,10 @@ namespace BlogicCRM.Controllers
                 EvidencniCislo = contract.EvidencniCislo,
                 Instituce = contract.Instituce,
                 ClientId = contract.ClientId,
-                ManagerId = contract.ManagerId
+                ManagerId = contract.ManagerId,
+                DatumUzavreni = contract.DatumUzavreni,
+                DatumPlatnosti = contract.DatumPlatnosti,
+                DatumUkonceni = contract.DatumUkonceni == DateTime.MinValue ? null : contract.DatumUkonceni
             };
 
             PopulateDropdownsAndCheckboxes(model);
@@ -131,6 +151,8 @@ namespace BlogicCRM.Controllers
 
             return View(model);
         }
+
+        
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -147,6 +169,9 @@ namespace BlogicCRM.Controllers
                 contract.Instituce = model.Instituce;
                 contract.ClientId = model.ClientId;
                 contract.ManagerId = model.ManagerId;
+                contract.DatumUzavreni = model.DatumUzavreni;
+                contract.DatumPlatnosti = model.DatumPlatnosti;
+                contract.DatumUkonceni = model.DatumUkonceni ?? DateTime.MinValue;
 
                 var oldRelations = _context.ContractAdvisors.Where(ca => ca.ContractId == id);
                 _context.ContractAdvisors.RemoveRange(oldRelations);
@@ -173,6 +198,8 @@ namespace BlogicCRM.Controllers
             PopulateDropdownsAndCheckboxes(model);
             return View(model);
         }
+
+        // ZAMKNUTO: Stránka s potvrzením smazání (GET)
         [Authorize]
         public IActionResult Delete(int id)
         {
@@ -183,6 +210,8 @@ namespace BlogicCRM.Controllers
             if (contract == null) return NotFound();
             return View(contract);
         }
+
+        // ZAMKNUTO: Samotné fyzické smazání smlouvy (POST)
         [Authorize]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -199,6 +228,8 @@ namespace BlogicCRM.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // Pomocná metoda pro plnění selectů a checkboxů
         private void PopulateDropdownsAndCheckboxes(ContractFormViewModel model)
         {
             model.DostupniKlienti = _context.Clients

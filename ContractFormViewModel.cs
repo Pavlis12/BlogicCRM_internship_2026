@@ -28,5 +28,8 @@ namespace BlogicCRM.ViewModels
 
         [Display(Name = "Další účastníci (poradci)")]
         public List<AdvisorCheckboxViewModel> DostupniUcastnici { get; set; } = new();
+        public DateTime DatumUzavreni { get; set; } = DateTime.Today;
+        public DateTime DatumPlatnosti { get; set; } = DateTime.Today;
+        public DateTime? DatumUkonceni { get; set; }
     }
 }

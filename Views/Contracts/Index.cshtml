@@ -20,6 +20,8 @@
         <tr>
             <th>Evidenční číslo</th>
             <th>Instituce</th>
+            <th>Uzavřeno</th>
+            <th>Účinnost od</th>
             <th>Klient</th>
             <th>Správce smlouvy</th>
             <th>Akce</th>
@@ -31,6 +33,8 @@
             <tr>
                 <td>@contract.EvidencniCislo</td>
                 <td>@contract.Instituce</td>
+                <td>@contract.DatumUzavreni.ToString("d. M. yyyy")</td>
+                <td>@contract.DatumPlatnosti.ToString("d. M. yyyy")</td>
                 <td>@contract.Client?.Jmeno @contract.Client?.Prijmeni</td>
                 <td>@contract.Manager?.Jmeno @contract.Manager?.Prijmeni</td>
                 <td>
