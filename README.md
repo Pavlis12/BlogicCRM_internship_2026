@@ -20,8 +20,8 @@ Věřím, že kombinace vlastního uvažování a moderních nástrojů je přir
 
 | Dokument | Obsah |
 |----------|-------|
-| [📘 Technická dokumentace](TECHNICKA_DOKUMENTACE.md) | Architektura, datový model, použité technologie, popis řešení |
-| [📗 Uživatelská dokumentace](UZIVATELSKA_DOKUMENTACE.md) | Jak s aplikací pracovat z pohledu uživatele |
+| [📘 Technická dokumentace](Technicka_dokumentace.md) | Architektura, datový model, použité technologie, popis řešení |
+| [📗 Uživatelská dokumentace](Uzivatelska_dokumentace.md) | Jak s aplikací pracovat z pohledu uživatele |
 
 ---
 
